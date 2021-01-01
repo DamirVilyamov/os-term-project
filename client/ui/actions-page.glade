@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="window">
+    <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed" id="fixed1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkButton" id="transfer">
+            <property name="label" translatable="yes">Transfer</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="x">430</property>
+            <property name="y">70</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="manage">
+            <property name="label" translatable="yes">Manage</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="x">502</property>
+            <property name="y">70</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="exchange">
+            <property name="label" translatable="yes">exchange</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="always_show_image">True</property>
+          </object>
+          <packing>
+            <property name="x">350</property>
+            <property name="y">70</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkAccelLabel" id="asideTitle">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Your total balance</property>
+          </object>
+          <packing>
+            <property name="x">5</property>
+            <property name="y">20</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkAccelLabel" id="eur">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">EUR: 25</property>
+          </object>
+          <packing>
+            <property name="x">5</property>
+            <property name="y">86</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkAccelLabel" id="usz">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">USZ: 25,000</property>
+          </object>
+          <packing>
+            <property name="x">5</property>
+            <property name="y">110</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkAccelLabel" id="window-title">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Hello, John Doe!</property>
+          </object>
+          <packing>
+            <property name="x">262</property>
+            <property name="y">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkAccelLabel" id="actionsTitle">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Actions:</property>
+          </object>
+          <packing>
+            <property name="x">350</property>
+            <property name="y">36</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="us">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">USD: 25</property>
+          </object>
+          <packing>
+            <property name="x">5</property>
+            <property name="y">63</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
