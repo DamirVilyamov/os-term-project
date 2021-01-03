@@ -11,6 +11,37 @@ void finish_with_error(MYSQL *con, int position)
     exit(1);
 }
 
+struct st_mysql *connectDB()
+{
+    MYSQL *con = mysql_init(NULL);
+
+    if (con == NULL)
+    {
+        fprintf(stderr, "%s\n", mysql_error(con));
+        exit(1);
+    }
+
+    if (mysql_real_connect(con, "localhost", "root", "password", "testdbProd", 0, NULL, 0) == NULL)
+    {
+        finish_with_error(con, 20);
+    }
+
+    return con;
+}
+
+void disconnectDB(MYSQL *con)
+{
+    mysql_close(con);
+}
+
+void runQuery(char *query, MYSQL *con)
+{
+    if (mysql_query(con, query))
+    {
+        finish_with_error(con, 44);
+    }
+}
+
 int createDB()
 {
     MYSQL *con = mysql_init(NULL);
@@ -39,60 +70,154 @@ int createDB()
     mysql_close(con);
 }
 
-void addUser(MYSQL *con, char *login, char *name, char *password, char *passportNumber)
+void addUser(char *login, char *name, char *password, char *passportNumber)
 {
+    MYSQL *con = connectDB();
     char query[100];
     sprintf(query, "INSERT INTO users VALUES('%s','%s', '%s', '%s')", login, name, password, passportNumber);
 
-    if (mysql_query(con, query))
-    {
-        finish_with_error(con, 44);
-    }
+    runQuery(query, con);
+
+    disconnectDB(con);
 }
 
-void addAccount(MYSQL *con, int accountNumber, int accountBalance, char *accountName, char *cardPassword, char *currency, char *login)
+void addAccount(char *accountNumber, int accountBalance, char *accountName, char *cardPassword, char *currency, char *login)
 {
-    char query[100];
-    sprintf(query, "INSERT INTO accounts VALUES('%d','%d', '%s', '%s', '%s', '%s')", accountNumber, accountBalance, accountName, cardPassword, currency, login);
+    MYSQL *con = connectDB();
 
-    if (mysql_query(con, query))
-    {
-        finish_with_error(con, 44);
-    }
+    char query[100];
+    sprintf(query, "INSERT INTO accounts VALUES('%s','%d', '%s', '%s', '%s', '%s')", accountNumber, accountBalance, accountName, cardPassword, currency, login);
+
+    runQuery(query, con);
+
+    disconnectDB(con);
 }
-//fromAccountNumber INT, toAccountNumber INT, transferDate VARCHAR(255), amount INT
-void addTransfer(MYSQL *con, int fromAccountNumber, int toAccountNumber, char *transferDate, int amount)
-{
-    char query[100];
-    sprintf(query, "INSERT INTO transfers VALUES('%d','%d', '%s', '%d')", fromAccountNumber, toAccountNumber, transferDate, amount);
 
-    if (mysql_query(con, query))
+void addTransfer(char *fromAccountNumber, char *toAccountNumber, char *transferDate, int amount)
+{
+    MYSQL *con = connectDB();
+
+    char query[100];
+    sprintf(query, "INSERT INTO transfers VALUES('%s','%s', '%s', '%d')", fromAccountNumber, toAccountNumber, transferDate, amount);
+
+    runQuery(query, con);
+
+    disconnectDB(con);
+}
+
+void getUser(char *login)
+{
+    MYSQL *con = connectDB();
+
+    char query[100];
+    sprintf(query, "SELECT * FROM users WHERE users.login = '%s'", login);
+
+    runQuery(query, con);
+
+    MYSQL_RES *result = mysql_store_result(con);
+
+    if (result == NULL)
     {
-        finish_with_error(con, 44);
+        finish_with_error(con, 51);
     }
+
+    int num_fields = mysql_num_fields(result);
+
+    MYSQL_ROW row;
+
+    while ((row = mysql_fetch_row(result)))
+    {
+        for (int i = 0; i < num_fields; i++)
+        {
+            printf("%s ", row[i] ? row[i] : "NULL");
+        }
+
+        printf("\n");
+    }
+
+    mysql_free_result(result);
+    disconnectDB(con);
+}
+
+void getAccountsForUser(char *login)
+{
+    MYSQL *con = connectDB();
+
+    char query[100];
+    sprintf(query, "SELECT * FROM accounts WHERE accounts.login = '%s'", login);
+
+    runQuery(query, con);
+
+    MYSQL_RES *result = mysql_store_result(con);
+
+    if (result == NULL)
+    {
+        finish_with_error(con, 51);
+    }
+
+    int num_fields = mysql_num_fields(result);
+
+    MYSQL_ROW row;
+
+    while ((row = mysql_fetch_row(result)))
+    {
+        for (int i = 0; i < num_fields; i++)
+        {
+            printf("%s ", row[i] ? row[i] : "NULL");
+        }
+
+        printf("\n");
+    }
+
+    mysql_free_result(result);
+    disconnectDB(con);
+}
+
+void getTransfersForAccount(char *accountNumber)
+{
+    MYSQL *con = connectDB();
+
+    char query[150];
+    sprintf(query, "SELECT * FROM transfers WHERE transfers.fromAccountNumber = '%s' OR transfers.toAccountNumber = '%s'", accountNumber, accountNumber);
+
+    runQuery(query, con);
+
+    MYSQL_RES *result = mysql_store_result(con);
+
+    if (result == NULL)
+    {
+        finish_with_error(con, 51);
+    }
+
+    int num_fields = mysql_num_fields(result);
+
+    MYSQL_ROW row;
+
+    while ((row = mysql_fetch_row(result)))
+    {
+        for (int i = 0; i < num_fields; i++)
+        {
+
+            printf("%s ", row[i] ? row[i] : "NULL");
+        }
+
+        printf("\n");
+    }
+    printf("\nfree transfers result\n");
+    mysql_free_result(result);
+    disconnectDB(con);
 }
 
 int createTables()
 {
-    MYSQL *con = mysql_init(NULL);
-
-    if (con == NULL)
-    {
-        fprintf(stderr, "%s\n", mysql_error(con));
-        exit(1);
-    }
-
-    if (mysql_real_connect(con, "localhost", "root", "password", "testdbProd", 0, NULL, 0) == NULL)
-    {
-        finish_with_error(con, 20);
-    }
+    MYSQL *con = connectDB();
 
     if (mysql_query(con, "USE testdbProd"))
     {
         finish_with_error(con, 2);
     }
 
-    if (mysql_query(con, "DROP TABLE IF EXISTS USERS"))
+    if (mysql_query(con, "DROP TABLE IF EXISTS users"))
     {
         finish_with_error(con, 2);
     }
@@ -107,7 +232,7 @@ int createTables()
         finish_with_error(con, 4);
     }
 
-    if (mysql_query(con, "CREATE TABLE accounts(accountNumber INT PRIMARY KEY, accountBalance INT, accountName VARCHAR(255), cardPassword VARCHAR(255), currency VARCHAR(255), login VARCHAR(255), CONSTRAINT FOREIGN KEY (login) REFERENCES users (login) )"))
+    if (mysql_query(con, "CREATE TABLE accounts(accountNumber VARCHAR(255) PRIMARY KEY, accountBalance INT, accountName VARCHAR(255), cardPassword VARCHAR(255), currency VARCHAR(255), login VARCHAR(255), CONSTRAINT FOREIGN KEY (login) REFERENCES users (login) )"))
     {
         finish_with_error(con, 5);
     }
@@ -117,28 +242,17 @@ int createTables()
         finish_with_error(con, 6);
     }
 
-    if (mysql_query(con, "CREATE TABLE transfers(fromAccountNumber INT, toAccountNumber INT, transferDate VARCHAR(255), amount INT)"))
+    if (mysql_query(con, "CREATE TABLE transfers(fromAccountNumber VARCHAR(255), toAccountNumber VARCHAR(255), transferDate VARCHAR(255), amount INT)"))
     {
         finish_with_error(con, 7);
     }
 
-    mysql_close(con);
+    disconnectDB(con);
 }
 
 int populateDb()
 {
-    MYSQL *con = mysql_init(NULL);
-
-    if (con == NULL)
-    {
-        fprintf(stderr, "%s\n", mysql_error(con));
-        exit(1);
-    }
-
-    if (mysql_real_connect(con, "localhost", "root", "password", "testdbProd", 0, NULL, 0) == NULL)
-    {
-        finish_with_error(con, 20);
-    }
+    MYSQL *con = connectDB();
 
     if (mysql_query(con, "USE testdbProd"))
     {
@@ -149,15 +263,15 @@ int populateDb()
         finish_with_error(con, 44);
     }
 
-    addUser(con, "Abbos@gmail.com", "Abbos", "123", "121313");
+    addUser("Abbos@gmail.com", "Abbos", "123", "121313");
 
-    addAccount(con, (int)86009090909090, (int)1000, "VISA", "2323", "$", "Damir@gmail.com");
-    addAccount(con, (int)86009090909080, (int)2000, "VISA", "2525", "$", "Abbos@gmail.com");
+    addAccount("86009090909090", (int)1000, "VISA", "2323", "$", "Damir@gmail.com");
+    addAccount("86009090909080", (int)2000, "VISA", "2525", "$", "Abbos@gmail.com");
 
-    addTransfer(con, (int)86009090909090, (int)86009090909080, "030121", (int)50);
-    addTransfer(con, (int)86009090909080, (int)86009090909090, "030121", (int)50);
+    addTransfer("86009090909090", "86009090909080", "030121", (int)50);
+    addTransfer("86009090909080", "86009090909090", "030121", (int)50);
 
-    mysql_close(con);
+    disconnectDB(con);
 }
 
 int main()
@@ -165,5 +279,10 @@ int main()
     createDB();
     createTables();
     populateDb();
+
+    // getUser("Damir@gmail.com");
+    // getAccountsForUser("Damir@gmail.com");
+    getTransfersForAccount("86009090909080");
+    printf("\nmain exiting fine\n");
     return 0;
 }
