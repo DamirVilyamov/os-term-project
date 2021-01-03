@@ -105,6 +105,52 @@ void addTransfer(char *fromAccountNumber, char *toAccountNumber, char *transferD
     disconnectDB(con);
 }
 
+int isUserAuthorized(char *login, char *password)
+{
+    MYSQL *con = connectDB();
+
+    char query[100];
+    sprintf(query, "SELECT * FROM users WHERE users.login = '%s' AND users.password = '%s'", login, password);
+
+    runQuery(query, con);
+
+    MYSQL_RES *result = mysql_store_result(con);
+
+    if (result == NULL)
+    {
+        finish_with_error(con, 51);
+    }
+
+    int num_fields = mysql_num_fields(result);
+    printf("%d\n", num_fields);
+    MYSQL_ROW row = mysql_fetch_row(result);
+    if (!row)
+    {
+
+        return 0;
+    }
+    else
+    {
+        printf("while:\n");
+
+        for (int i = 0; i < num_fields; i++)
+        {
+            printf("%s ", row[i] ? row[i] : "NULL");
+            printf("\n%d ", i);
+            // if (row[i] == "NULL")
+            // {
+            //     return 0;
+            // }
+        }
+
+        printf("\n");
+    }
+
+    mysql_free_result(result);
+    disconnectDB(con);
+    return 1;
+}
+
 void getUser(char *login)
 {
     MYSQL *con = connectDB();
@@ -282,7 +328,9 @@ int main()
 
     // getUser("Damir@gmail.com");
     // getAccountsForUser("Damir@gmail.com");
-    getTransfersForAccount("86009090909080");
+    //getTransfersForAccount("86009090909080");
+    int answer = isUserAuthorized("Damir@gmail.com", "12333");
+    printf("\nis authorised = %d", answer);
     printf("\nmain exiting fine\n");
     return 0;
 }
