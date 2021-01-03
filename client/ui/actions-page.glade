@@ -114,6 +114,19 @@
             <property name="y">63</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkButton" id="open_window">
+            <property name="label" translatable="yes">click</property>
+            <property name="width_request">100</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="x">273</property>
+            <property name="y">219</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>
