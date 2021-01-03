@@ -18,6 +18,8 @@ GtkWidget	*transferBtn;
 GtkWidget	*radio1;
 GtkWidget	*radio2;
 GtkWidget	*radio3;
+GtkWidget	*stack;
+GtkWidget	*viewPort;
 GtkWidget	*textView;
 GtkTextBuffer	*textBuffer; 
 GtkBuilder	*builder;
@@ -55,6 +57,10 @@ int main(int argc, char *argv[]) {
 	radio3 = GTK_WIDGET(gtk_builder_get_object(builder, "radio3"));
 
 	textView = GTK_WIDGET(gtk_builder_get_object(builder, "textView"));
+
+	stack = GTK_WIDGET(gtk_builder_get_object(builder, "stack"));
+
+	viewPort = GTK_WIDGET(gtk_builder_get_object(builder, "viewPort"));
 
 	textBuffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW(textView));
 

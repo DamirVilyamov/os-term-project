@@ -8,34 +8,36 @@
       <placeholder/>
     </child>
     <child>
-      <object class="GtkFixed" id="fixed1">
+      <object class="GtkFixed" id="fixed">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkButton" id="singin">
-            <property name="label" translatable="yes">SignIn</property>
+          <object class="GtkButton" id="signIn">
+            <property name="label" translatable="yes">Sign In</property>
             <property name="width_request">100</property>
             <property name="height_request">55</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_signIn_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="x">180</property>
+            <property name="x">100</property>
             <property name="y">95</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">SignUp</property>
+          <object class="GtkButton" id="signUp">
+            <property name="label" translatable="yes">Sign Up</property>
             <property name="width_request">100</property>
             <property name="height_request">55</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_signUp_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="x">305</property>
+            <property name="x">230</property>
             <property name="y">95</property>
           </packing>
         </child>

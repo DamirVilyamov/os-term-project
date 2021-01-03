@@ -57,7 +57,7 @@
             <property name="label" translatable="yes">To</property>
           </object>
           <packing>
-            <property name="x">280</property>
+            <property name="x">260</property>
             <property name="y">70</property>
           </packing>
         </child>
@@ -69,7 +69,7 @@
             <property name="label" translatable="yes">Account Number:</property>
           </object>
           <packing>
-            <property name="x">325</property>
+            <property name="x">300</property>
             <property name="y">100</property>
           </packing>
         </child>
@@ -138,16 +138,32 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="textView">
-            <property name="width_request">120</property>
+          <object class="GtkScrolledWindow" id="stack">
+            <property name="width_request">140</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="wrap_mode">char</property>
-            <property name="left_margin">5</property>
-            <property name="right_margin">5</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkViewport" id="viewPort">
+                <property name="width_request">100</property>
+                <property name="height_request">20</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkTextView" id="textView">
+                    <property name="width_request">120</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="wrap_mode">char</property>
+                    <property name="left_margin">5</property>
+                    <property name="right_margin">5</property>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
           <packing>
-            <property name="x">325</property>
+            <property name="x">295</property>
             <property name="y">130</property>
           </packing>
         </child>
