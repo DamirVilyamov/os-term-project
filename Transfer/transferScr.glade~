@@ -139,7 +139,7 @@
         </child>
         <child>
           <object class="GtkScrolledWindow" id="stack">
-            <property name="width_request">140</property>
+            <property name="width_request">150</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
