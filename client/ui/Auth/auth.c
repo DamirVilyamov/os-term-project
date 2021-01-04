@@ -11,7 +11,7 @@ GtkWidget	*window,*SignUpWindow,*SignInWindow,*newSignInWindow;
 GtkWidget	*fixed,*fixed1;
 GtkWidget	*signIn;
 GtkWidget	*signUp; 
-GtkWidget	*SignUpFixed,*SignUpTitle,*SignUpLogin,*SignUpPassword,*SignUpName,*SignUpSerialNumber,*SignUpBtn;
+GtkWidget	*SignUpFixed, *SignUpTitle,*SignUpBtn,*NewSignUpLogin,*NewSignUpPassword1,*SignUpViewPort,*SignUpView,*SignUpViewPort1,*SignUpView1;
 GtkWidget	*SignInFixed,*SignInTitle,*SignInLogin,*SignInPassword,*SignInBtn;
 GtkWidget	*stack1;
 GtkWidget	*viewPort1;
@@ -21,10 +21,11 @@ GtkWidget	*viewPort2;
 GtkWidget	*textView2;
 GtkWidget	*saveBtn;
 GtkTextBuffer	*textBuffer1;
-GtkTextBuffer	*textBuffer2; 
+GtkTextBuffer	*textBuffer2,*textBufferSignUp1,*textBufferSignUp2;
 GtkBuilder	*builder;
 void	on_changed_text1(GtkTextBuffer *t);
 void	on_changed_text2(GtkTextBuffer *t); 
+void	on_changed_textSignUp2(GtkTextBuffer *t);
 int main(int argc, char *argv[]) {
 	gtk_init(&argc, &argv);
 	
@@ -41,10 +42,20 @@ int main(int argc, char *argv[]) {
 	
 	SignUpFixed = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpFixed"));
 	SignUpTitle = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpTitle"));
-	SignUpLogin = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpLogin"));
-	SignUpPassword = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpPassword"));
-	SignUpName = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpName"));
-	SignUpSerialNumber = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpSerialNumber"));
+	// first input login 
+	NewSignUpLogin = GTK_WIDGET(gtk_builder_get_object(builder, "NewSignUpLogin"));
+        SignUpViewPort = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpViewPort"));
+        SignUpView = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpView"));
+	//second input password
+
+	NewSignUpPassword1 = GTK_WIDGET(gtk_builder_get_object(builder, "NewSignUpPassword1"));
+        SignUpViewPort1 = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpViewPort1"));
+        SignUpView1 = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpView1"));
+
+	
+	
+	
+	//button
 	SignUpBtn = GTK_WIDGET(gtk_builder_get_object(builder, "SignUpBtn"));
 
 	SignInFixed = GTK_WIDGET(gtk_builder_get_object(builder, "SignInFixed"));
@@ -76,9 +87,21 @@ int main(int argc, char *argv[]) {
 
 	textBuffer2 = gtk_text_view_get_buffer (GTK_TEXT_VIEW(textView2));
 
+
+	textBufferSignUp1 = gtk_text_view_get_buffer (GTK_TEXT_VIEW(SignUpView));
+
+	textBufferSignUp2 = gtk_text_view_get_buffer (GTK_TEXT_VIEW(SignUpView1));
+
+
 	g_signal_connect(textBuffer1, "changed", G_CALLBACK(on_changed_text1), NULL); 
 
 	g_signal_connect(textBuffer2, "changed", G_CALLBACK(on_changed_text2), NULL); 
+
+	//sign up connects
+
+	g_signal_connect(textBufferSignUp1, "changed", G_CALLBACK(on_changed_text1), NULL);
+
+	g_signal_connect(textBufferSignUp2, "changed", G_CALLBACK(on_changed_text2), NULL);
 
 	gtk_widget_hide(saveBtn);
 	gtk_widget_show(window);
@@ -103,7 +126,7 @@ void	on_signUp_clicked (GtkButton *b) {
 	gtk_widget_show(SignUpWindow);
 }
 void	on_saveBtn_clicked (GtkButton *b) {
-	printf("Button clicked\n");
+	printf("Button clickedIn\n");
 
 	GtkTextIter begin, end;
 	gchar * text;
@@ -123,13 +146,39 @@ void	on_saveBtn_clicked (GtkButton *b) {
 	gtk_widget_hide(saveBtn);
 }
 
+void	submit_signup (GtkButton *b) {
+	printf("Button clickedSignUp\n");
+	
+	GtkTextIter begin, end;
+	gchar * text;
+
+	gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER(textBufferSignUp1), &begin, (gint) 0);
+	gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER(textBufferSignUp1), &end, (gint) -1);
+
+	text = gtk_text_buffer_get_text (GTK_TEXT_BUFFER(textBufferSignUp1), &begin, &end, TRUE);
+	printf("-------\n%s\n-------\n", text);
+
+	gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER(textBufferSignUp2), &begin, (gint) 0);
+	gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER(textBufferSignUp2), &end, (gint) -1);
+
+	text = gtk_text_buffer_get_text (GTK_TEXT_BUFFER(textBufferSignUp2), &begin, &end, TRUE);
+	printf("-------\n%s\n-------\n", text);
+
+
+	
+	
+}
+
 void on_changed_text1(GtkTextBuffer *t) {
 	printf("*** Login changed\n");
 	gtk_widget_show(saveBtn);
 }
-
 void on_changed_text2(GtkTextBuffer *t) {
-	printf("*** Password changed\n");
+	printf("*** Password changed text222\n");
+	gtk_widget_show(saveBtn);
+}
+void on_changed_textSignUp2(GtkTextBuffer *t) {
+	printf("*** Password changed222 signUp2\n");
 	gtk_widget_show(saveBtn);
 }
 

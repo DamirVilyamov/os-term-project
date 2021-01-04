@@ -86,59 +86,66 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry" id="SignUpLogin">
-            <property name="width_request">250</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-          </object>
-          <packing>
-            <property name="x">107</property>
-            <property name="y">78</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="SignUpPassword">
-            <property name="width_request">250</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-          </object>
-          <packing>
-            <property name="x">107</property>
-            <property name="y">118</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="SignUpName">
-            <property name="width_request">250</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-          </object>
-          <packing>
-            <property name="x">107</property>
-            <property name="y">158</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="SignUpSerialNumber">
-            <property name="width_request">250</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-          </object>
-          <packing>
-            <property name="x">107</property>
-            <property name="y">199</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="SignUpBtn">
-            <property name="label" translatable="yes">Sign Up</property>
+            <property name="label" translatable="yes">Save</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <signal name="clicked" handler="submit_signup" swapped="no"/>
           </object>
           <packing>
             <property name="x">198</property>
             <property name="y">323</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="NewSignUpLogin">
+            <property name="width_request">241</property>
+            <property name="height_request">26</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkViewport" id="SignUpViewPort">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkTextView" id="SignUpView">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">107</property>
+            <property name="y">70</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="NewSignUpPassword1">
+            <property name="width_request">246</property>
+            <property name="height_request">26</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkViewport" id="SignUpViewPort1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkTextView" id="SignUpView1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">107</property>
+            <property name="y">120</property>
           </packing>
         </child>
       </object>
@@ -218,6 +225,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_saveBtn_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="x">166</property>
